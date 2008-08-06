@@ -1,0 +1,5 @@
+C:\Documents and Settings\Matt\My Documents\Projects\ITVC.CSharp\PodcastConverter\bin\Debug\PodcastConverter.exe
+C:\Documents and Settings\Matt\My Documents\Projects\ITVC.CSharp\PodcastConverter\bin\Debug\PodcastConverter.pdb
+C:\Documents and Settings\Matt\My Documents\Projects\ITVC.CSharp\PodcastConverter\obj\Debug\ResolveAssemblyReference.cache
+C:\Documents and Settings\Matt\My Documents\Projects\ITVC.CSharp\PodcastConverter\obj\Debug\PodcastConverter.exe
+C:\Documents and Settings\Matt\My Documents\Projects\ITVC.CSharp\PodcastConverter\obj\Debug\PodcastConverter.pdb
