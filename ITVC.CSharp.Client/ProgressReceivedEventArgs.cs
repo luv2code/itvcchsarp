@@ -11,8 +11,8 @@ namespace ITVC.CSharp.Client
 
         public ProgressReceivedEventArgs(String number)
         {
-            int number = int.Parse(number);
-            Percent = number / 100;
+            int num = int.Parse(number);
+            Percent = num / 100;
         }
     }
 }

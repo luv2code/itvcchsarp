@@ -9,7 +9,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ITVC.CSharp.Server", "ITVC.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ITVC.CSharp.Client", "ITVC.CSharp.Client\ITVC.CSharp.Client.csproj", "{44ACCD0F-DEA3-4678-AD8E-821676B6D41D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PodcastConverter", "PodcastConverter\PodcastConverter.csproj", "{F1085D95-BBAE-4EC6-8FB5-D0ADE229FDB8}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PodcastConverter", "PodcastConverter\PodcastConverter.csproj", "{3DFEC266-E2FF-4896-B2BA-158EEADB78F7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,10 +33,10 @@ Global
 		{44ACCD0F-DEA3-4678-AD8E-821676B6D41D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{44ACCD0F-DEA3-4678-AD8E-821676B6D41D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{44ACCD0F-DEA3-4678-AD8E-821676B6D41D}.Release|Any CPU.Build.0 = Release|Any CPU
-		{F1085D95-BBAE-4EC6-8FB5-D0ADE229FDB8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{F1085D95-BBAE-4EC6-8FB5-D0ADE229FDB8}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{F1085D95-BBAE-4EC6-8FB5-D0ADE229FDB8}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{F1085D95-BBAE-4EC6-8FB5-D0ADE229FDB8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3DFEC266-E2FF-4896-B2BA-158EEADB78F7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3DFEC266-E2FF-4896-B2BA-158EEADB78F7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3DFEC266-E2FF-4896-B2BA-158EEADB78F7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3DFEC266-E2FF-4896-B2BA-158EEADB78F7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

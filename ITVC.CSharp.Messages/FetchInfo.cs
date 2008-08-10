@@ -30,6 +30,7 @@ namespace ITVC.CSharp.Messages
                 xml.Append(ThumbnailPath);
             }
             xml.Append(MessageConstants.FETCH_INFO_CLOSE);
+            xml.Append("\n");
             return xml.ToString();
         }
     }
