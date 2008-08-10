@@ -14,21 +14,23 @@ namespace ITVC.CSharp.Client
     {
 
         private int _port;
-        private Process MediaHandlerProc;
+        private string _path;
+        private Process _mediaHandlerProc;
         private TcpClient _client;
         private NetworkStream _stream;
 
         public event EventHandler<ProgressReceivedEventArgs> ProgressReceived;
 
-        public MediaHandlerClient(int port)
+        public MediaHandlerClient(int mediaHandlerPort, string mediaHandlerPath)
         {
-            _port = port;
-
-            Process MediaHandlerProc = new Process();
-            MediaHandlerProc.StartInfo.FileName = ConfigurationManager.AppSettings["MediaHandlerEXEPath"];
-            MediaHandlerProc.StartInfo.CreateNoWindow = true;
-            MediaHandlerProc.StartInfo.Arguments = port.ToString();
-            MediaHandlerProc.Start();
+            _port = mediaHandlerPort;
+            _path = mediaHandlerPath;
+            _mediaHandlerProc = new Process();
+            _mediaHandlerProc.StartInfo.FileName = _path;
+            _mediaHandlerProc.StartInfo.CreateNoWindow = true;
+            _mediaHandlerProc.StartInfo.Arguments = _port.ToString();
+            _mediaHandlerProc.Start();
+            _client = new TcpClient();
         }
         
         public FetchInfoDetails FetchInfo(FetchInfo fetchInfoRequest)
@@ -37,7 +39,7 @@ namespace ITVC.CSharp.Client
 
             FetchInfoDetails fid = new FetchInfoDetails();
             MessageBase msg = MessageBase.GetMessageFromText(ReadFromStream());
-            while (!msg is Result)
+            while (!(msg is Result))
             {
                 switch (msg.MsgType)
                 {
@@ -46,32 +48,32 @@ namespace ITVC.CSharp.Client
                         fid.AudioCodec = ac.Value;
                         break;
                     case MessageType.FileSize:
-                        FileSize ac = (FileSize)msg;
-                        fid.FileSize = ac.Value;
+                        FileSize fs = (FileSize)msg;
+                        fid.FileSize = int.Parse(fs.Value);
                         break;
                     case MessageType.FPS:
-                        FPS ac = (FPS)msg;
-                        fid.FPS = ac.Value;
+                        FPS fps = (FPS)msg;
+                        fid.FPS = float.Parse(fps.Value);
                         break;
                     case MessageType.Height:
-                        Height ac = (Height)msg;
-                        fid.Height = ac.Value;
+                        Height h = (Height)msg;
+                        fid.Height = int.Parse(h.Value);
                         break;
                     case MessageType.Length:
-                        Length ac = (Length)msg;
-                        fid.Length = ac.Value;
+                        Length l = (Length)msg;
+                        fid.Length = float.Parse(l.Value);
                         break;
                     case MessageType.VideoBitRate:
-                        VideoBitRate ac = (VideoBitRate)msg;
-                        fid.VideoBitRate = ac.Value;
+                        VideoBitRate vbr = (VideoBitRate)msg;
+                        fid.VideoBitRate = int.Parse(vbr.Value);
                         break;
                     case MessageType.VideoCodec:
-                        VideoCodec ac = (VideoCodec)msg;
-                        fid.VideoCodec = ac.Value;
+                        VideoCodec vc = (VideoCodec)msg;
+                        fid.VideoCodec = vc.Value;
                         break;
                     case MessageType.Width:
-                        Width ac = (Width)msg;
-                        fid.Width = ac.Value;
+                        Width w = (Width)msg;
+                        fid.Width = int.Parse(w.Value);
                         break;
                 }
                 msg = MessageBase.GetMessageFromText(ReadFromStream());
@@ -105,7 +107,7 @@ namespace ITVC.CSharp.Client
 
         public void Dispose()
         {
-            MediaHandlerProc.Close();
+            _mediaHandlerProc.Close();
         }
 
 
@@ -116,8 +118,33 @@ namespace ITVC.CSharp.Client
             _stream.Flush();
         }
 
+        //private string ReadFromStream()
+        //{
+        //    byte[] data = new byte[5000];
+        //    StringBuilder readData = new StringBuilder();
+            
+        //    int bytesRead = 0; int chunkSize = 1;
+            
+        //    while (bytesRead < data.Length && chunkSize > 0)
+        //    {
+        //        bytesRead += chunkSize = _stream.Read(data, bytesRead, data.Length - bytesRead);
+        //        readData.Append(ASCIIEncoding.ASCII.GetString(data));
+        //    }
+
+        //    return readData.ToString();
+        //}
+
         private string ReadFromStream()
         {
+            int data = 0;
+            List<byte> datas = new List<byte>();
+            while (data != 10 && data != -1)
+            {
+                data = _stream.ReadByte();
+                if (data != 10)
+                    datas.Add((byte)data);
+            }
+            return ASCIIEncoding.ASCII.GetString(datas.ToArray());
         }
         #endregion
     }
