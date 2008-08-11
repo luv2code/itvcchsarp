@@ -20,6 +20,7 @@ namespace ITVC.CSharp.Messages
             StringBuilder xml = new StringBuilder();
             xml.Append(MessageConstants.QUIT_OPEN);
             xml.Append(MessageConstants.QUIT_CLOSE);
+            xml.Append("\n");
             return xml.ToString();
         }
     }

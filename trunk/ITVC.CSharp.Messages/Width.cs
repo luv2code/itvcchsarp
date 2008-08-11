@@ -25,6 +25,7 @@ namespace ITVC.CSharp.Messages
             xml.Append(MessageConstants.WIDTH_OPEN);
             xml.Append(Value);
             xml.Append(MessageConstants.WIDTH_CLOSE);
+            xml.Append("\n");
             return xml.ToString();
         }
     }
