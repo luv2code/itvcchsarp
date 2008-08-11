@@ -24,6 +24,7 @@ namespace ITVC.CSharp.Messages
             xml.Append(MessageConstants.AUDIO_CODEC_OPEN);
             xml.Append(Value);
             xml.Append(MessageConstants.AUDIO_CODEC_CLOSE);
+            xml.Append("\n");
             return xml.ToString();
         }
     }

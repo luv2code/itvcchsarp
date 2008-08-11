@@ -22,12 +22,12 @@ namespace PodcastConverter
             int port = int.Parse(ConfigurationManager.AppSettings["MediaHandlerPort"]);
             string path = ConfigurationManager.AppSettings["MediaHandlerPath"];
             
-            using (_client = new MediaHandlerClient(port, path))
+            using (_client = new MediaHandlerClient(port, path, System.Diagnostics.ProcessPriorityClass.High))
             {
                 _client.Connect();
                 FetchInfo fi = new FetchInfo();
-                fi.FilePath = @"C:\Documents and Settings\Matt\My Documents\Projects\pickle.mp4";
-                fi.ThumbnailPath = @"C:\Documents and Settings\Matt\My Documents\Projects\pickle.jpg";
+                fi.FilePath = @"C:\Documents and Settings\Matt\My Documents\Projects\rb_08_aug_08_hd.m4v";
+                fi.ThumbnailPath = @"C:\Documents and Settings\Matt\My Documents\Projects\rocketboom.jpg";
                 FetchInfoDetails fid = _client.FetchInfo(fi);
                 String[] info = new string[] {  fid.AudioCodec, 
                                                 fid.FileSize.ToString(), 
@@ -38,7 +38,26 @@ namespace PodcastConverter
                                                 fid.VideoCodec, 
                                                 fid.Width.ToString() };
                 textBox1.Text = String.Join(" ", info);
+
+                Transcode transcodeRequest = new Transcode();
+                transcodeRequest.AudioBitRate = "128000";
+                transcodeRequest.FPS = "24";
+                transcodeRequest.Height = "240";
+                transcodeRequest.InputPath = fi.FilePath;
+                transcodeRequest.OutputPath = @"C:\Documents and Settings\Matt\My Documents\Projects\rb_08_aug_08_hd n8x0.mp4";
+                transcodeRequest.VideoBitRate = "350000";
+                transcodeRequest.VideoCodec = Transcode.VIDEO_CODEC_MPEG4;
+                transcodeRequest.Width = "400";
+                _client.ProgressReceived += new EventHandler<ProgressReceivedEventArgs>(ProgressReceived);
+                _client.Transcode(transcodeRequest);
+                _client.Quit();
             }
+        }
+
+        public void ProgressReceived(object sender, ProgressReceivedEventArgs args)
+        {
+            textBox1.Text += args.Percent + "%  ";
+            _client.ProgressReply(new ProgressReply() { Value = ProgressReply.REPLY_PROCEED });
         }
     }
 }

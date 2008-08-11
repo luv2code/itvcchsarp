@@ -27,6 +27,7 @@ namespace ITVC.CSharp.Messages
             xml.Append(MessageConstants.PROGRESS_REPLY_OPEN);
             xml.Append(Value);
             xml.Append(MessageConstants.PROGRESS_REPLY_CLOSE);
+            xml.Append("\n");
             return xml.ToString();
         }
     }

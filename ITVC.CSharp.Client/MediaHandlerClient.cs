@@ -21,7 +21,7 @@ namespace ITVC.CSharp.Client
 
         public event EventHandler<ProgressReceivedEventArgs> ProgressReceived;
 
-        public MediaHandlerClient(int mediaHandlerPort, string mediaHandlerPath)
+        public MediaHandlerClient(int mediaHandlerPort, string mediaHandlerPath, ProcessPriorityClass priority)
         {
             _port = mediaHandlerPort;
             _path = mediaHandlerPath;
@@ -29,6 +29,7 @@ namespace ITVC.CSharp.Client
             _mediaHandlerProc.StartInfo.FileName = _path;
             _mediaHandlerProc.StartInfo.CreateNoWindow = true;
             _mediaHandlerProc.StartInfo.Arguments = _port.ToString();
+            _mediaHandlerProc.PriorityClass = priority;
             _mediaHandlerProc.Start();
             _client = new TcpClient();
         }
@@ -83,14 +84,28 @@ namespace ITVC.CSharp.Client
 
         public void Transcode(Transcode transcodeRequest)
         {
+            WriteToStream(transcodeRequest.ToXML());
+            MessageBase msg = MessageBase.GetMessageFromText(ReadFromStream());
+            while (!(msg is Result))
+            {
+                if (msg is Progress && ProgressReceived != null)
+                {
+                    Progress prog = (Progress) msg;
+                    ProgressReceivedEventArgs args = new ProgressReceivedEventArgs(prog.Number);
+                    ProgressReceived(this, args);
+                }
+                msg = MessageBase.GetMessageFromText(ReadFromStream());
+            }
         }
 
-        public void Quit(Quit quitRequest)
+        public void Quit()
         {
+            WriteToStream((new Quit()).ToXML());
         }
 
         public void ProgressReply(ProgressReply progressReplyRequest)
         {
+            WriteToStream(progressReplyRequest.ToXML());
         }
 
         public void Connect()
@@ -117,22 +132,6 @@ namespace ITVC.CSharp.Client
             _stream.Write(data, 0, data.Length);
             _stream.Flush();
         }
-
-        //private string ReadFromStream()
-        //{
-        //    byte[] data = new byte[5000];
-        //    StringBuilder readData = new StringBuilder();
-            
-        //    int bytesRead = 0; int chunkSize = 1;
-            
-        //    while (bytesRead < data.Length && chunkSize > 0)
-        //    {
-        //        bytesRead += chunkSize = _stream.Read(data, bytesRead, data.Length - bytesRead);
-        //        readData.Append(ASCIIEncoding.ASCII.GetString(data));
-        //    }
-
-        //    return readData.ToString();
-        //}
 
         private string ReadFromStream()
         {

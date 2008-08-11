@@ -25,6 +25,7 @@ namespace ITVC.CSharp.Messages
             xml.Append(MessageConstants.VIDEO_CODEC_OPEN);
             xml.Append(Value);
             xml.Append(MessageConstants.VIDEO_CODEC_CLOSE);
+            xml.Append("\n");
             return xml.ToString();
         }
     }

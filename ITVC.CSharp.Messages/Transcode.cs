@@ -50,6 +50,7 @@ namespace ITVC.CSharp.Messages
             xml.Append(MessageConstants.PARAMETER_DELIMITER);
             xml.Append(FPS);
             xml.Append(MessageConstants.TRANSCODE_CLOSE);
+            xml.Append("\n");
             return xml.ToString();
         }
     }

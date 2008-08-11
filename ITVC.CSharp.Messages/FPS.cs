@@ -24,6 +24,7 @@ namespace ITVC.CSharp.Messages
             xml.Append(MessageConstants.FPS_OPEN);
             xml.Append(Value);
             xml.Append(MessageConstants.FPS_CLOSE);
+            xml.Append("\n");
             return xml.ToString();
         }
     }

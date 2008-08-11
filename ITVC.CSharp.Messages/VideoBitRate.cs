@@ -24,6 +24,7 @@ namespace ITVC.CSharp.Messages
             xml.Append(MessageConstants.VIDEO_BIT_RATE_OPEN);
             xml.Append(Value);
             xml.Append(MessageConstants.VIDEO_BIT_RATE_CLOSE);
+            xml.Append("\n");
             return xml.ToString();
         }
     }
