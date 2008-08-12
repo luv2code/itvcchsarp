@@ -37,39 +37,28 @@ namespace ITVC.CSharp.Server
             //string msg = new BinaryReader(_stream).ReadString();
             while (_continue)
             {
-                byte[] data = new byte[5000];
-
-                int bytesRead = 0; int chunkSize = 1;
-                while (bytesRead < data.Length && chunkSize > 0)
-                    bytesRead +=
-                      chunkSize = _stream.Read(data, bytesRead, data.Length - bytesRead);
-
-                if (bytesRead > 0)
+                string rawText = ReadFromStream();
+                MessageBase msg = MessageBase.GetMessageFromText(rawText);
+                MediaHandlerEventArgs args = new MediaHandlerEventArgs(msg.MsgType, rawText, msg);
+                switch (msg.MsgType)
                 {
-                    string rawText = Encoding.ASCII.GetString(data);
-                    MessageBase msg = MessageBase.GetMessageFromText(rawText);
-                    MediaHandlerEventArgs args = new MediaHandlerEventArgs(msg.MsgType, rawText, msg);
-                    switch (msg.MsgType)
-                    {
-                        case MessageType.FetchInfo:
-                            if (FetchInfoReceived != null)
-                                FetchInfoReceived(this, args);
-                            break;
-                        case MessageType.Transcode:
-                            if (TranscodeReceived != null)
-                                TranscodeReceived(this, args);
-                            break;
-                        case MessageType.ProgressReply:
-                            if (ProgressReplyReceived != null)
-                                ProgressReplyReceived(this, args);
-                            break;
-                        case MessageType.Quit:
-                            if (QuitReceived != null)
-                                QuitReceived(this, args);
-                            break;
-                    }
-                }                
-
+                    case MessageType.FetchInfo:
+                        if (FetchInfoReceived != null)
+                            FetchInfoReceived(this, args);
+                        break;
+                    case MessageType.Transcode:
+                        if (TranscodeReceived != null)
+                            TranscodeReceived(this, args);
+                        break;
+                    case MessageType.ProgressReply:
+                        if (ProgressReplyReceived != null)
+                            ProgressReplyReceived(this, args);
+                        break;
+                    case MessageType.Quit:
+                        if (QuitReceived != null)
+                            QuitReceived(this, args);
+                        break;
+                }
             }
             _listener.Stop();
         }
@@ -84,6 +73,20 @@ namespace ITVC.CSharp.Server
             byte[] data = ASCIIEncoding.ASCII.GetBytes(msg.ToXML());
             _stream.Write(data, 0, data.Length);
             _stream.Flush();
+        }
+
+
+        private string ReadFromStream()
+        {
+            int data = 0;
+            List<byte> datas = new List<byte>();
+            while (data != 10 && data != -1)
+            {
+                data = _stream.ReadByte();
+                if (data != 10)
+                    datas.Add((byte)data);
+            }
+            return ASCIIEncoding.ASCII.GetString(datas.ToArray());
         }
     }
 }
