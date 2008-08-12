@@ -21,7 +21,7 @@ namespace ITVC.CSharp.Client
 
         public event EventHandler<ProgressReceivedEventArgs> ProgressReceived;
 
-        public MediaHandlerClient(int mediaHandlerPort, string mediaHandlerPath, ProcessPriorityClass priority)
+        public MediaHandlerClient(int mediaHandlerPort, string mediaHandlerPath)//, ProcessPriorityClass priority)
         {
             _port = mediaHandlerPort;
             _path = mediaHandlerPath;
@@ -29,8 +29,8 @@ namespace ITVC.CSharp.Client
             _mediaHandlerProc.StartInfo.FileName = _path;
             _mediaHandlerProc.StartInfo.CreateNoWindow = true;
             _mediaHandlerProc.StartInfo.Arguments = _port.ToString();
-            _mediaHandlerProc.PriorityClass = priority;
             _mediaHandlerProc.Start();
+            //_mediaHandlerProc.PriorityClass = priority;
             _client = new TcpClient();
         }
         
@@ -116,12 +116,15 @@ namespace ITVC.CSharp.Client
 
         public void Close()
         {
+            _client.Close();
         }
 
         #region IDisposable Members
 
         public void Dispose()
         {
+            if (_client.Connected)
+                _client.Close();
             _mediaHandlerProc.Close();
         }
 

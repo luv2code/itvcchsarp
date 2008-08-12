@@ -22,12 +22,12 @@ namespace PodcastConverter
             int port = int.Parse(ConfigurationManager.AppSettings["MediaHandlerPort"]);
             string path = ConfigurationManager.AppSettings["MediaHandlerPath"];
             
-            using (_client = new MediaHandlerClient(port, path, System.Diagnostics.ProcessPriorityClass.High))
+            using (_client = new MediaHandlerClient(port, path));//, System.Diagnostics.ProcessPriorityClass.High))
             {
                 _client.Connect();
                 FetchInfo fi = new FetchInfo();
-                fi.FilePath = @"C:\Documents and Settings\Matt\My Documents\Projects\rb_08_aug_08_hd.m4v";
-                fi.ThumbnailPath = @"C:\Documents and Settings\Matt\My Documents\Projects\rocketboom.jpg";
+                fi.FilePath = @"C:\Documents and Settings\Matt\My Documents\Projects\pickle.mp4";
+                fi.ThumbnailPath = @"C:\Documents and Settings\Matt\My Documents\Projects\pickle.jpg";
                 FetchInfoDetails fid = _client.FetchInfo(fi);
                 String[] info = new string[] {  fid.AudioCodec, 
                                                 fid.FileSize.ToString(), 
@@ -44,7 +44,7 @@ namespace PodcastConverter
                 transcodeRequest.FPS = "24";
                 transcodeRequest.Height = "240";
                 transcodeRequest.InputPath = fi.FilePath;
-                transcodeRequest.OutputPath = @"C:\Documents and Settings\Matt\My Documents\Projects\rb_08_aug_08_hd n8x0.mp4";
+                transcodeRequest.OutputPath = @"C:\Documents and Settings\Matt\My Documents\Projects\pickle n8x0.mp4";
                 transcodeRequest.VideoBitRate = "350000";
                 transcodeRequest.VideoCodec = Transcode.VIDEO_CODEC_MPEG4;
                 transcodeRequest.Width = "400";
@@ -57,7 +57,9 @@ namespace PodcastConverter
         public void ProgressReceived(object sender, ProgressReceivedEventArgs args)
         {
             textBox1.Text += args.Percent + "%  ";
-            _client.ProgressReply(new ProgressReply() { Value = ProgressReply.REPLY_PROCEED });
+            ProgressReply pr = new ProgressReply();
+            pr.Value = ProgressReply.REPLY_PROCEED;
+            _client.ProgressReply(pr);
         }
     }
 }

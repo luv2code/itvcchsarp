@@ -32,6 +32,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="System.configuration" />
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
@@ -47,6 +48,23 @@
   <ItemGroup>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\ITVC.CSharp.Client\ITVC.CSharp.Client.csproj">
+      <Project>{44ACCD0F-DEA3-4678-AD8E-821676B6D41D}</Project>
+      <Name>ITVC.CSharp.Client</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ITVC.CSharp.Messages\ITVC.CSharp.Messages.csproj">
+      <Project>{AA6848B1-37C7-42C1-8DAF-560D41C7A947}</Project>
+      <Name>ITVC.CSharp.Messages</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ITVC.CSharp.Server\ITVC.CSharp.Server.csproj">
+      <Project>{D7E8B5EA-DE0E-4009-8EB0-4A62FF1BA645}</Project>
+      <Name>ITVC.CSharp.Server</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
