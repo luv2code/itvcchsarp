@@ -19,6 +19,9 @@ namespace PodcastConverter
         public Form1()
         {
             InitializeComponent();
+
+            btnFeedSave.Enabled = false;
+
             int port = int.Parse(ConfigurationManager.AppSettings["MediaHandlerPort"]);
             string path = ConfigurationManager.AppSettings["MediaHandlerPath"];
             
@@ -37,8 +40,6 @@ namespace PodcastConverter
                                                 fid.VideoBitRate.ToString(), 
                                                 fid.VideoCodec, 
                                                 fid.Width.ToString() };
-                textBox1.Text = String.Join(" ", info);
-
                 Transcode transcodeRequest = new Transcode();
                 transcodeRequest.AudioBitRate = "128000";
                 transcodeRequest.FPS = "24";
@@ -56,10 +57,14 @@ namespace PodcastConverter
 
         public void ProgressReceived(object sender, ProgressReceivedEventArgs args)
         {
-            textBox1.Text += args.Percent + "%  ";
             ProgressReply pr = new ProgressReply();
             pr.Value = ProgressReply.REPLY_PROCEED;
             _client.ProgressReply(pr);
+        }
+
+        private void lstFeeds_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            btnFeedSave.Enabled = true;
         }
     }
 }
