@@ -15,7 +15,8 @@ namespace PodcastConverter
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new Form1());
+            SettingsForm settings = new SettingsForm();
+            Application.Run(settings);
         }
     }
 }

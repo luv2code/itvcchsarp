@@ -82,7 +82,7 @@ namespace ITVC.CSharp.Client
             return fid;
         }
 
-        public void Transcode(Transcode transcodeRequest)
+        public Result Transcode(Transcode transcodeRequest)
         {
             WriteToStream(transcodeRequest.ToXML());
             MessageBase msg = MessageBase.GetMessageFromText(ReadFromStream());
@@ -96,6 +96,8 @@ namespace ITVC.CSharp.Client
                 }
                 msg = MessageBase.GetMessageFromText(ReadFromStream());
             }
+
+            return (Result)msg;
         }
 
         public void Quit()
@@ -116,7 +118,7 @@ namespace ITVC.CSharp.Client
 
         public void Close()
         {
-            _client.Close();
+            _stream.Close();
         }
 
         #region IDisposable Members
