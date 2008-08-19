@@ -168,13 +168,14 @@ namespace PodcastConverter
             this.Hide();
             mnuShowSettingsForm.Enabled = true;
 
-            _timer.Start();
             string watchFolder = Path.Combine(_store.DownloadFolder, @"watch\");
             if (!Directory.Exists(watchFolder))
                 Directory.CreateDirectory(watchFolder);
             _conversionEngine = new ConversionEngine(watchFolder, _store.ConvertedFolder, _store.DeleteOriginals);
             _conversionEngine.ProgressReceived += new EventHandler<ProgressReceivedEventArgs>(_conversionEngine_ProgressReceived);
             _conversionEngine.ConvertComplete += new EventHandler<EventArgs>(_conversionEngine_ConvertComplete);
+            _timer_Elapsed(null, null);
+            _timer.Start();
         }
 
         void _conversionEngine_ConvertComplete(object sender, EventArgs e)
