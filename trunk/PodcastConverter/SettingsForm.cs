@@ -69,7 +69,7 @@ namespace PodcastConverter
 
             PopulateForm();
 
-            _timer = new System.Timers.Timer(1000); //1800000);//30 minutes
+            _timer = new System.Timers.Timer(1800000);//30 minutes
 
             _timer.Elapsed += new ElapsedEventHandler(_timer_Elapsed);
         }
