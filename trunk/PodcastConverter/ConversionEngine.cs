@@ -73,7 +73,7 @@ namespace PodcastConverter
                 transcodeRequest.Height = "240";
                 transcodeRequest.InputPath = path;
                 transcodeRequest.OutputPath = Path.Combine(PathConvertedFiles, Path.GetFileNameWithoutExtension(path) + "_converted.mp4");
-                transcodeRequest.VideoBitRate = "700000";
+                transcodeRequest.VideoBitRate = "768000";
                 transcodeRequest.VideoCodec = Transcode.VIDEO_CODEC_MPEG4;
                 transcodeRequest.Width = "400";
                 Result res = _mhclient.Transcode(transcodeRequest);
