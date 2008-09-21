@@ -97,6 +97,7 @@ namespace PodcastConverter
                     }
                 }
             }
+            SaveObject<List<String>>(_fileHistory, _fileHistoryPath);
         }
 
         void wc_DownloadProgressChanged(object sender, DownloadProgressChangedEventArgs e)
