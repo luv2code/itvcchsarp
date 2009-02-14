@@ -1,5 +1,0 @@
-C:\Documents and Settings\Matt\My Documents\Projects\ITVC.CSharp\ITVC.CSharp.Messages\obj\Debug\ResolveAssemblyReference.cache
-C:\Documents and Settings\Matt\My Documents\Projects\ITVC.CSharp\ITVC.CSharp.Messages\bin\Debug\ITVC.CSharp.Messages.dll
-C:\Documents and Settings\Matt\My Documents\Projects\ITVC.CSharp\ITVC.CSharp.Messages\bin\Debug\ITVC.CSharp.Messages.pdb
-C:\Documents and Settings\Matt\My Documents\Projects\ITVC.CSharp\ITVC.CSharp.Messages\obj\Debug\ITVC.CSharp.Messages.dll
-C:\Documents and Settings\Matt\My Documents\Projects\ITVC.CSharp\ITVC.CSharp.Messages\obj\Debug\ITVC.CSharp.Messages.pdb
