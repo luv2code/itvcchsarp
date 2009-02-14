@@ -1,5 +1,0 @@
-C:\Documents and Settings\Matt\My Documents\Projects\ITVC.CSharp\ITVC.CSharp.MediaHandlerProxy\bin\Debug\ITVC.CSharp.MediaHandlerProxy.exe
-C:\Documents and Settings\Matt\My Documents\Projects\ITVC.CSharp\ITVC.CSharp.MediaHandlerProxy\bin\Debug\ITVC.CSharp.MediaHandlerProxy.pdb
-C:\Documents and Settings\Matt\My Documents\Projects\ITVC.CSharp\ITVC.CSharp.MediaHandlerProxy\obj\Debug\ResolveAssemblyReference.cache
-C:\Documents and Settings\Matt\My Documents\Projects\ITVC.CSharp\ITVC.CSharp.MediaHandlerProxy\obj\Debug\ITVC.CSharp.MediaHandlerProxy.exe
-C:\Documents and Settings\Matt\My Documents\Projects\ITVC.CSharp\ITVC.CSharp.MediaHandlerProxy\obj\Debug\ITVC.CSharp.MediaHandlerProxy.pdb

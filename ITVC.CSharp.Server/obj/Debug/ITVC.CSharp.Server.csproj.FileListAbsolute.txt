@@ -1,7 +1,0 @@
-C:\Documents and Settings\Matt\My Documents\Projects\ITVC.CSharp\ITVC.CSharp.Server\bin\Debug\ITVC.CSharp.Server.dll
-C:\Documents and Settings\Matt\My Documents\Projects\ITVC.CSharp\ITVC.CSharp.Server\bin\Debug\ITVC.CSharp.Server.pdb
-C:\Documents and Settings\Matt\My Documents\Projects\ITVC.CSharp\ITVC.CSharp.Server\obj\Debug\ResolveAssemblyReference.cache
-C:\Documents and Settings\Matt\My Documents\Projects\ITVC.CSharp\ITVC.CSharp.Server\obj\Debug\ITVC.CSharp.Server.dll
-C:\Documents and Settings\Matt\My Documents\Projects\ITVC.CSharp\ITVC.CSharp.Server\obj\Debug\ITVC.CSharp.Server.pdb
-C:\Documents and Settings\Matt\My Documents\Projects\ITVC.CSharp\ITVC.CSharp.Server\bin\Debug\ITVC.CSharp.Messages.dll
-C:\Documents and Settings\Matt\My Documents\Projects\ITVC.CSharp\ITVC.CSharp.Server\bin\Debug\ITVC.CSharp.Messages.pdb
