@@ -23,12 +23,13 @@ namespace PodcastConverter
         const string ICON_TEXT_IDLE = "Podcast Converter - Idle";
         const string ICON_TEXT_DOWNLOADING = "Podcast Converter - Downloading";
         const string ICON_TEXT_CONVERTING = "Podcast Converter - Converting";
+        const int BALLON_TIMEOUT = 10;
 
         private ConverterSettings _store;
         private string _settingsPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "FeedSettings.xml");
         private ConversionEngine _conversionEngine;
         private System.Timers.Timer _timer;
-
+        private bool _settingsFound = false;
         private List<string> _fileHistory;
         private string _fileHistoryPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "FeedHistory.xml");
 
@@ -47,6 +48,7 @@ namespace PodcastConverter
             if (File.Exists(_settingsPath))
             {
                 _store = (ConverterSettings) LoadObject<ConverterSettings>(_settingsPath);
+                _settingsFound = true;
             }
             else
             {
@@ -72,42 +74,56 @@ namespace PodcastConverter
             _timer = new System.Timers.Timer(1800000);//30 minutes
 
             _timer.Elapsed += new ElapsedEventHandler(_timer_Elapsed);
+
+            //TODO: abstract logic from event handler into separate function.
+            if (_settingsFound) 
+                startTimer();
         }
+        
 
         void _timer_Elapsed(object sender, ElapsedEventArgs e)
         {
-            foreach (object o in _store.Feeds)
+            try
             {
-                FeedStore fs = (FeedStore)o;
-                XElement feed = XElement.Load(fs.Url);
-
-                var query = from f in feed.Element("channel").Elements("item").Take(fs.NumberOfEntries)
-                            select new { Url = f.Element("enclosure").Attribute("url").Value };
-                foreach (var url in query)
+                foreach (object o in _store.Feeds)
                 {
-                    if (!_fileHistory.Contains(url.Url))
+                    FeedStore fs = (FeedStore)o;
+                    XElement feed = XElement.Load(fs.Url);
+
+                    var query = from f in feed.Element("channel").Elements("item").Take(fs.NumberOfEntries)
+                                select new { Url = f.Element("enclosure").Attribute("url").Value };
+                    foreach (var url in query)
                     {
-                        _fileHistory.Add(url.Url);
-                        WebClient wc = new WebClient();
-                        wc.DownloadFileCompleted += new AsyncCompletedEventHandler(wc_DownloadFileCompleted);
-                        wc.DownloadProgressChanged += new DownloadProgressChangedEventHandler(wc_DownloadProgressChanged);
-                        string filePath = Path.Combine(_store.DownloadFolder, Path.GetFileName(url.Url));
-                        filePath = filePath.Replace(".m4v", ".mp4");
-                        wc.DownloadFileAsync(new Uri(url.Url), filePath, filePath);
+                        if (!_fileHistory.Contains(url.Url))
+                        {
+                            _fileHistory.Add(url.Url);
+                            WebClient wc = new WebClient();
+                            wc.DownloadFileCompleted += new AsyncCompletedEventHandler(wc_DownloadFileCompleted);
+                            wc.DownloadProgressChanged += new DownloadProgressChangedEventHandler(wc_DownloadProgressChanged);
+                            string filePath = Path.Combine(_store.DownloadFolder, Path.GetFileName(url.Url));
+                            filePath = filePath.Replace(".m4v", ".mp4");
+                            wc.DownloadFileAsync(new Uri(url.Url), filePath, filePath);
+                        }
                     }
                 }
+                SaveObject<List<String>>(_fileHistory, _fileHistoryPath);
             }
-            SaveObject<List<String>>(_fileHistory, _fileHistoryPath);
+            catch (Exception ex)
+            {
+                this.SysTrayIcon.ShowBalloonTip(BALLON_TIMEOUT, "Error", "Error Occured : \n" + ex.ToString(), ToolTipIcon.Error);                
+            }
         }
 
         void wc_DownloadProgressChanged(object sender, DownloadProgressChangedEventArgs e)
         {
             SysTrayIcon.Text = ICON_TEXT_DOWNLOADING + " " + e.ProgressPercentage.ToString() + "%";
+            SysTrayIcon.ShowBalloonTip(BALLON_TIMEOUT, "Downloading", ICON_TEXT_DOWNLOADING + " " + e.ProgressPercentage.ToString() + "%", ToolTipIcon.Info);
         }
 
         void wc_DownloadFileCompleted(object sender, AsyncCompletedEventArgs e)
         {
             SysTrayIcon.Text = ICON_TEXT_IDLE;
+            SysTrayIcon.ShowBalloonTip(BALLON_TIMEOUT, "Downloading", ICON_TEXT_IDLE, ToolTipIcon.Info);
             _conversionEngine.Enqueue((string)e.UserState);
         }
 
@@ -168,7 +184,11 @@ namespace PodcastConverter
 
             this.Hide();
             mnuShowSettingsForm.Enabled = true;
+            if (!_timer.Enabled) startTimer();
+        }
 
+        void startTimer()
+        {
             string watchFolder = Path.Combine(_store.DownloadFolder, @"watch\");
             if (!Directory.Exists(watchFolder))
                 Directory.CreateDirectory(watchFolder);
@@ -182,11 +202,13 @@ namespace PodcastConverter
         void _conversionEngine_ConvertComplete(object sender, EventArgs e)
         {
             SysTrayIcon.Text = ICON_TEXT_IDLE;
+            SysTrayIcon.ShowBalloonTip(BALLON_TIMEOUT, "Converting", ICON_TEXT_IDLE, ToolTipIcon.Info);
         }
 
         void _conversionEngine_ProgressReceived(object sender, ProgressReceivedEventArgs e)
         {
             SysTrayIcon.Text = ICON_TEXT_CONVERTING + " " + e.Percent.ToString() + "%";
+            SysTrayIcon.ShowBalloonTip(BALLON_TIMEOUT, "Converting", ICON_TEXT_CONVERTING + " " + e.Percent.ToString() + "%", ToolTipIcon.Info);
         }
 
         private void PutValuesInStore()
